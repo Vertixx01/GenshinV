@@ -9,10 +9,10 @@ class Interactions {
         });
     }
 
-    public async edit(interaction: CommandInteraction, message: string) {
-        const embed = new EmbedBuilder().setColor("#FF0000").setDescription(message);
+    public async edit(interaction: any, data: EmbedBuilder) {
+        await interaction.deferUpdate();
         return await interaction.editReply({
-            embeds: [embed]
+            embeds: [data]
         });
     }
 

@@ -1,4 +1,5 @@
-import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, CommandInteraction, Events } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ChatInputCommandInteraction, CommandInteraction, EmbedBuilder, Events } from 'discord.js';
+import getCharacter from '../backend/functions/characters';
 import CustomClient from './customClient';
 
 class Buttons {
@@ -20,7 +21,7 @@ class Buttons {
                     await client.interactions.delete(i as CommandInteraction);
                     break;
                 case "edit":
-                    await client.interactions.edit(i as CommandInteraction, "Edited!");
+                    await client.interactions.edit(i as CommandInteraction, new EmbedBuilder().setColor("#FF0000").setDescription("Edited!"));
                     break;
             }
 
@@ -30,13 +31,31 @@ class Buttons {
     public async handleMenu(interaction: ChatInputCommandInteraction, client: CustomClient) {
         client.on('interactionCreate', async (interaction) => {
             if (!interaction.isStringSelectMenu()) return;
-            await interaction.deferUpdate();
             switch (interaction.customId) {
-                case "characters":
-                    await client.interactions.reply(interaction as any as CommandInteraction, `You selected ${interaction.values.map((value: string) => value).join(", ")}`, false);
-                    break;
+                case `characters_${interaction.customId.replace('characters_', '')}`:
+                    for (const o of interaction.component.options) {
+                        if (o.value === interaction.values.map(v => v)[0]) {
+                            await getCharacter(interaction.customId.replace('characters_', ''), Number(o.value)).then(async data => {
+                                await client.interactions.edit(interaction, new EmbedBuilder()
+                                    .setColor("#FF0000")
+                                    .setTitle(`**${data.name}** • ${data.ign}`)
+                                    .setThumbnail(data.images[0].icon)
+                                    .addFields(
+                                        { name: 'Level', value: String(data.level) },
+                                        { name: 'Constellation', value: String(data.constellation) },
+                                        { name: 'Friendship', value: String(data.friendship) }
+                                    )
+                                    .setTimestamp()
+                                    .setFooter({ text: "Genshin Impact", iconURL: interaction.guild?.iconURL() })
+                                )
+
+                            })
+                        }
+
+                    }
+                break;
             }
-        });
+        })
     }
 }
 

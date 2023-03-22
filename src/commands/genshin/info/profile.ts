@@ -9,7 +9,9 @@ module.exports = {
         .addStringOption(uid => uid.setName("uid").setDescription("The UID of the player")),
 
     execute(interaction: ChatInputCommandInteraction, client: CustomClient) {
-        getProfile(interaction.options.getString("uid")).then(async data => {
+        const uid = interaction.options.getString("uid");
+        if (!uid) return interaction.reply({ content: "Please provide a UID", ephemeral: true });
+        getProfile(uid).then(async data => {
             interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -24,7 +26,7 @@ module.exports = {
                         .setTimestamp()
                         .setFooter({ text: "Genshin Impact", iconURL: interaction.guild?.iconURL() })
                 ],
-                components: [{ type: 1, components: [new StringSelectMenuBuilder().setCustomId("characters").setPlaceholder("Select a character").addOptions(data.characters.map(char => ({ label: char.name, description: char.description ,value: String(char.id) })))]}]
+                components: [{ type: 1, components: [new StringSelectMenuBuilder().setCustomId(`characters_${uid}`).setPlaceholder("Select a character").addOptions(data.characters.map(char => ({ label: char.name, description: char.description , value: String(data.characters.findIndex(c => c.id === char.id)) }))) ] }]
             })
         })
     }
