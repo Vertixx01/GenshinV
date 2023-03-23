@@ -9,6 +9,7 @@ module.exports = {
         const buttons = new Buttons();
         buttons.handleButton(interaction, client);
         buttons.handleMenu(interaction, client);
+        buttons.handleModal(interaction, client);
         const { commandName, guild, user } = interaction;
         if (!guild) return;
 

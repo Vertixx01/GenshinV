@@ -1,7 +1,7 @@
-import { ButtonInteraction, ChannelSelectMenuInteraction, ChatInputCommandInteraction, CommandInteraction, EmbedBuilder, MentionableSelectMenuInteraction, RoleSelectMenuInteraction, StringSelectMenuInteraction, UserSelectMenuInteraction } from "discord.js"
+import { CommandInteraction, EmbedBuilder, ModalBuilder } from "discord.js"
 
 class Interactions {
-    public async reply(interaction: CommandInteraction, message: string, ephemeral: boolean) {
+    public async reply(interaction: any, message: string, ephemeral: boolean) {
         const embed = new EmbedBuilder().setColor("#FF0000").setDescription(message);
         return await interaction.reply({
             embeds: [embed],
@@ -19,6 +19,10 @@ class Interactions {
     public async delete(interaction: any) {
         await interaction.deferUpdate();
         return await interaction.deleteReply();
+    }
+
+    public async showModal(interaction: any, data: ModalBuilder) {
+        return interaction.showModal(data);
     }
 }
 
