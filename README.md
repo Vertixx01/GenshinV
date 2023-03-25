@@ -1,1 +1,2 @@
 # Basicbot
+**CRAZY BOT WITH BROKEN COMMANADS**
