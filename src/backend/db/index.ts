@@ -10,7 +10,7 @@ export interface IError {
 class DB {
     supabase: SupabaseClient;
     constructor() {
-        this.supabase = createClient('https://ctagcabfbgtsxfsttioj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0YWdjYWJmYmd0c3hmc3R0aW9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Nzk1NjY0NDQsImV4cCI6MTk5NTE0MjQ0NH0.lNtBnij8TYZ6mZ2yPCXrJqe1H6SAeDWgj9Gd1e0ffOw');
+        this.supabase = createClient('https://ctagcabfbgtsxfsttioj.supabase.co', 'NAWW');
     }
 
     async linkUID(uid: string, discord_id: string) {
